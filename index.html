@@ -523,31 +523,31 @@
             animation: fadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        /* Cursor Animation */
+        /* Enhanced Responsive Cursor */
         * {
             cursor: none;
         }
 
         .cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent-color);
-            border-radius: 50%;
+            width: 8px;
+            height: 16px;
+            background: var(--accent-color);
+            border: none;
+            animation: blink 1s infinite;
+            border-radius: 0;
             position: fixed;
             pointer-events: none;
-            transition: all 0.3s ease;
             z-index: 9999;
+            transition: none;
         }
 
         .cursor-dot {
-            width: 4px;
-            height: 4px;
-            background: var(--accent-color);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            transition: all 0.2s ease;
-            z-index: 9999;
+            display: none;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         /* Responsive Enhancements */
@@ -607,6 +607,87 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced Timeline Styles */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background: var(--accent-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+            box-shadow: 0 0 15px var(--accent-color);
+            animation: timelineGlow 2s infinite;
+        }
+
+        @keyframes timelineGlow {
+            0%, 100% { box-shadow: 0 0 15px var(--accent-color); }
+            50% { box-shadow: 0 0 30px var(--accent-color); }
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            opacity: 0;
+            transform: translateX(-100px);
+            transition: all 0.8s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            transform: translateX(100px);
+        }
+
+        .timeline-item:nth-child(even).visible {
+            transform: translateX(0);
+        }
+
+        .timeline-content {
+            padding: 20px 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(97, 218, 251, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(97, 218, 251, 0.2);
+        }
+
+        .timeline-date {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* Additional Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 10px var(--accent-color); }
+            50% { text-shadow: 0 0 30px var(--accent-color); }
         }
     </style>
     <script>
@@ -676,6 +757,33 @@
                     loadingScreen.style.display = 'none';
                 }, 500);
             });
+
+            // Timeline Animation
+            const timelineObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                timelineObserver.observe(item);
+            });
+
+            // Enhanced cursor movement with trailing effect
+            let cursorTrail = [];
+            const trailLength = 5;
+
+            document.addEventListener('mousemove', (e) => {
+                cursorTrail.push({ x: e.clientX, y: e.clientY });
+                if (cursorTrail.length > trailLength) {
+                    cursorTrail.shift();
+                }
+
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
         });
 
         // Enhanced Spoiler functionality
@@ -726,7 +834,6 @@
             <a href="#about" class="animate__animated animate__fadeIn animate__delay-1s">About</a>
             <a href="#skills" class="animate__animated animate__fadeIn animate__delay-1s">Skills</a>
             <a href="#projects" class="animate__animated animate__fadeIn animate__delay-1s">Projects</a>
-            <a href="#minecraft" class="animate__animated animate__fadeIn animate__delay-1s">Minecraft</a>
             <a href="#experience" class="animate__animated animate__fadeIn animate__delay-1s">Experience</a>
             <a href="#contact" class="animate__animated animate__fadeIn animate__delay-1s">Contact</a>
         </div>
@@ -860,6 +967,80 @@
         </div>
     </section>
 
+    <section id="experience">
+        <h2 class="section-title animate__animated animate__fadeIn">My Journey</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2013</div>
+                    <h3>Introduction to Programming</h3>
+                    <p>Started learning basic HTML and CSS at a young age, creating simple web pages.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2014-2015</div>
+                    <h3>Exploring New Languages</h3>
+                    <p>Learned Python and Java, building small projects and games to enhance my skills.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2016</div>
+                    <h3>Advanced Programming</h3>
+                    <p>Dived into C++ and JavaScript, focusing on object-oriented programming and web development.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2017-2018</div>
+                    <h3>Computer Science Foundation</h3>
+                    <p>Enrolled in a Computer Science degree program, mastering core concepts and algorithms.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2019</div>
+                    <h3>Graduation and Professional Start</h3>
+                    <p>Graduated with a degree in Computer Science. Began working as a full-stack developer.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2020-2021</div>
+                    <h3>Specialization in Backend Development</h3>
+                    <p>Focused on backend architecture, mastering Spring Boot and microservices.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2022</div>
+                    <h3>Senior Developer</h3>
+                    <p>Led development teams and implemented enterprise-level solutions.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">2023-2024</div>
+                    <h3>Tech Lead & AI Integration</h3>
+                    <p>Leading multiple projects, specializing in AI integration and scalable architectures.</p>
+                    <ul>
+                        <li>Developed AI-driven analytics tools for real-time data processing.</li>
+                        <li>Implemented CI/CD pipelines to streamline deployment processes.</li>
+                        <li>Mentored junior developers and conducted workshops on modern tech stacks.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact">
         <h2 class="section-title">Get in Touch</h2>
         <div class="contact-grid">
@@ -891,5 +1072,4 @@
             <p>&copy; 2024 Vansh (RyuReaper). All rights reserved.</p>
         </footer>
     </body>
-</html>
-                        
+</html>                        
