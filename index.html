@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         /* Base Styles */
         :root {
@@ -271,8 +272,8 @@
         }
 
         .skill-card:hover {
-            transform: rotateX(10deg) rotateY(10deg) translateY(-10px);
-            box-shadow: 0 15px 30px rgba(97, 218, 251, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(97, 218, 251, 0.2);
         }
 
         .skill-card i {
@@ -567,6 +568,325 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+        }
+
+        /* About Section */
+        .about-container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .code-preview-container,
+        .about-content-container {
+            flex: 1;
+            position: relative;
+            padding: 1.5rem;
+            background: rgba(30, 30, 46, 0.6);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            height: 500px;
+            box-shadow: 0 0 30px rgba(97, 218, 251, 0.15);
+        }
+
+        .code-preview-box {
+            width: 100%;
+            height: calc(100% - 2rem);
+            background: #1e1e1e;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .code-header {
+            background: #2c2c3a;
+            padding: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: relative;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: 0.8rem;
+        }
+
+        .window-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close { background: #ff5f56; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #27c93f; }
+
+        .filename-display {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #8a8a8a;
+            font-size: 0.9rem;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .code-content {
+            height: calc(100% - 40px);
+            overflow-y: auto;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #d4d4d4;
+        }
+
+        .code-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .code-content::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        .code-content::-webkit-scrollbar-thumb {
+            background: #424242;
+            border-radius: 4px;
+        }
+
+        /* Syntax highlighting */
+        .keyword { color: #c586c0; }
+        .type { color: #4ec9b0; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; }
+        .function { color: #dcdcaa; }
+        .variable { color: #9cdcfe; }
+        .operator { color: #d4d4d4; }
+        .class-name { color: #4ec9b0; }
+        .constant { color: #4fc1ff; }
+
+        /* Fog effect */
+        .fog-effect {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center,
+                rgba(97, 218, 251, 0.1) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+            animation: rotateFog 20s linear infinite;
+        }
+
+        @keyframes rotateFog {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Personal Info Button */
+        .personal-info-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background: linear-gradient(145deg, var(--card-bg), var(--accent-color));
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(97, 218, 251, 0.2);
+        }
+
+        .personal-info-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(97, 218, 251, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(145deg, var(--card-bg), #2a2a3a);
+            margin: 5% auto;
+            padding: 2.5rem;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes modalSlideOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-100px);
+            }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-card {
+            background: rgba(97, 218, 251, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(97, 218, 251, 0.2);
+        }
+
+        .info-card i {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover i {
+            transform: scale(1.2) rotate(360deg);
+        }
+
+        /* Enhanced Close Button for Modal */
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: linear-gradient(145deg, #2a2a3a, #1e1e2f);
+            border: none;
+            color: #ff5f56;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 95, 86, 0.2);
+            background: linear-gradient(145deg, #ff5f56, #ff4141);
+            color: white;
+        }
+
+        .close-modal i {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .close-modal:hover i {
+            transform: rotate(90deg);
+        }
+
+        /* VS Code-style Syntax Highlighting */
+        .code-content {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* VS Code-like syntax colors */
+        .keyword {
+            color: #c586c0; /* pink for keywords */
+        }
+
+        .type {
+            color: #4ec9b0; /* teal for types */
+        }
+
+        .string {
+            color: #ce9178; /* orange for strings */
+        }
+
+        .number {
+            color: #b5cea8; /* light green for numbers */
+        }
+
+        .comment {
+            color: #6a9955; /* green for comments */
+        }
+
+        .function {
+            color: #dcdcaa; /* yellow for functions */
+        }
+
+        .variable {
+            color: #9cdcfe; /* light blue for variables */
+        }
+
+        .operator {
+            color: #d4d4d4; /* white for operators */
+        }
+
+        .class-name {
+            color: #4ec9b0; /* teal for class names */
+        }
+
+        .constant {
+            color: #4fc1ff; /* bright blue for constants */
         }
 
         .loading-animation {
@@ -957,6 +1277,70 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Enhanced Modal Close Button */
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: linear-gradient(145deg, #2a2a3a, #1e1e2f);
+            border: none;
+            color: #ff5f56;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 95, 86, 0.2);
+            background: linear-gradient(145deg, #ff5f56, #ff4141);
+            color: white;
+        }
+
+        .close-modal i {
+            font-size: 1.2rem;
+        }
+
+        /* Replace spin animations with professional bounce */
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(97, 218, 251, 0.2);
+        }
+
+        .info-card:hover i {
+            transform: translateY(-3px);
+        }
+
+        /* Enhanced VS Code-style syntax highlighting */
+        .code-content {
+            --vscode-blue: #569cd6;
+            --vscode-green: #6a9955;
+            --vscode-yellow: #dcdcaa;
+            --vscode-orange: #ce9178;
+            --vscode-purple: #c586c0;
+            --vscode-red: #f44747;
+            --vscode-lightblue: #9cdcfe;
+            --vscode-teal: #4ec9b0;
+        }
+
+        .keyword { color: var(--vscode-purple); }
+        .type { color: var(--vscode-teal); }
+        .string { color: var(--vscode-orange); }
+        .number { color: var(--vscode-lightblue); }
+        .comment { color: var(--vscode-green); }
+        .function { color: var(--vscode-yellow); }
+        .variable { color: var(--vscode-lightblue); }
+        .operator { color: var(--vscode-white); }
+        .class-name { color: var(--vscode-teal); }
+        .constant { color: var(--vscode-blue); }
     </style>
     <script>
         // Enhanced Intersection Observer for scroll animations
@@ -1113,6 +1497,291 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize variables
+            const modal = document.getElementById('personal-info-modal');
+            const closeBtn = document.querySelector('.close-modal');
+            const personalInfoBtn = document.querySelector('.personal-info-btn');
+            const codeElement = document.querySelector('.typewriter-text');
+            const filenameDisplay = document.querySelector('.filename-display');
+            let currentLanguageIndex = 0;
+
+            // Code examples with syntax highlighting
+            const codeExamples = {
+                typescript: `import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil, debounceTime, map, mergeMap } from 'rxjs/operators';
+
+class GameEngine {
+    private gameState$: BehaviorSubject<GameState>;
+    private inputSubject: Subject<PlayerInput>;
+    private destroy$: Subject<void>;
+    private physicsEngine: PhysicsEngine;
+    private networkManager: NetworkManager;
+
+    constructor() {
+        this.gameState$ = new BehaviorSubject<GameState>(this.getInitialState());
+        this.inputSubject = new Subject<PlayerInput>();
+        this.destroy$ = new Subject<void>();
+        this.physicsEngine = new PhysicsEngine();
+        this.networkManager = new NetworkManager();
+        this.setupSubscriptions();
+    }
+
+    private setupSubscriptions(): void {
+        this.inputSubject.pipe(
+            takeUntil(this.destroy$),
+            debounceTime(16),
+            map(input => this.processInput(input)),
+            mergeMap(state => this.physicsEngine.update(state)),
+            map(state => this.processCollisions(state))
+        ).subscribe(state => {
+            this.gameState$.next(state);
+            this.networkManager.broadcast(state);
+        });
+    }
+
+    public dispatchInput(input: PlayerInput): void {
+        this.inputSubject.next(input);
+        this.updateGameState();
+        this.renderFrame();
+    }
+}`,
+                rust: `use tokio::sync::{mpsc, RwLock};
+use std::collections::HashMap;
+use uuid::Uuid;
+use serde::{Serialize, Deserialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct Entity {
+    position: Vector3<f32>,
+    velocity: Vector3<f32>,
+    rotation: Quaternion<f32>,
+    scale: Vector3<f32>,
+}
+
+impl Entity {
+    fn update(&mut self, delta_time: f32) -> Result<(), PhysicsError> {
+        self.position += self.velocity * delta_time;
+        self.rotation = self.rotation * Quaternion::from_euler_angles(0.0, 0.01, 0.0);
+        self.validate_bounds()?;
+        Ok(())
+    }
+
+    fn apply_force(&mut self, force: Vector3<f32>, mass: f32) {
+        self.velocity += force / mass;
+        self.clamp_velocity();
+    }
+}
+
+struct World {
+    entities: HashMap<Uuid, Entity>,
+    quad_tree: QuadTree<Uuid>,
+    physics_settings: PhysicsConfig,
+}
+
+impl World {
+    fn spawn_entity(&mut self, entity: Entity) -> Uuid {
+        let id = Uuid::new_v4();
+        self.quad_tree.insert(id, entity.position.into());
+        self.entities.insert(id, entity);
+        id
+    }
+}`,
+                python: `from dataclasses import dataclass
+from typing import List, Optional, Dict, Any
+import numpy as np
+import torch
+import torch.nn as nn
+
+@dataclass
+class NetworkConfig:
+    input_size: int
+    hidden_size: int
+    num_layers: int
+    dropout_rate: float
+    learning_rate: float
+    batch_size: int
+
+class TransformerNetwork(nn.Module):
+    def __init__(self, config: NetworkConfig):
+        super().__init__()
+        self.embedding = nn.Linear(config.input_size, config.hidden_size)
+        self.transformer_layers = nn.ModuleList([
+            TransformerLayer(config.hidden_size, config.dropout_rate)
+            for _ in range(config.num_layers)
+        ])
+        self.output_layer = nn.Linear(config.hidden_size, config.input_size)
+        self.layer_norm = nn.LayerNorm(config.hidden_size)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.embedding(x)
+        for layer in self.transformer_layers:
+            x = layer(x)
+        x = self.layer_norm(x)
+        return self.output_layer(x)`,
+                go: `package engine
+
+import (
+    "sync"
+    "time"
+    "github.com/go-gl/mathgl/mgl32"
+)
+
+type Entity struct {
+    Position mgl32.Vec3
+    Rotation mgl32.Quat
+    Scale    mgl32.Vec3
+    Velocity mgl32.Vec3
+    Mass     float32
+}
+
+type World struct {
+    entities map[uint64]*Entity
+    mutex    sync.RWMutex
+    quadTree *QuadTree
+}
+
+func NewWorld() *World {
+    return &World{
+        entities: make(map[uint64]*Entity),
+        quadTree: NewQuadTree(Bounds{
+            Min: mgl32.Vec2{-1000, -1000},
+            Max: mgl32.Vec2{1000, 1000},
+        }),
+    }
+}
+
+func (w *World) Update(deltaTime float32) {
+    w.mutex.Lock()
+    defer w.mutex.Unlock()
+
+    for _, entity := range w.entities {
+        entity.Position = entity.Position.Add(entity.Velocity.Mul(deltaTime))
+        w.resolveCollisions(entity)
+        w.updateQuadTree(entity)
+    }
+}`,
+                cpp: `#include <memory>
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+
+class PhysicsComponent {
+private:
+    glm::vec3 position{};
+    glm::vec3 velocity{};
+    glm::quat rotation{};
+    float mass{1.0f};
+    std::vector<std::weak_ptr<Collider>> colliders{};
+
+public:
+    void Update(float deltaTime) {
+        position += velocity * deltaTime;
+        ApplyGravity(deltaTime);
+        UpdateColliders();
+    }
+
+    void ApplyForce(const glm::vec3& force) {
+        velocity += force / mass;
+        ClampVelocity();
+    }
+
+    void SetPosition(const glm::vec3& newPosition) {
+        position = newPosition;
+        for (auto& collider : colliders) {
+            if (auto ptr = collider.lock()) {
+                ptr->UpdatePosition(position);
+            }
+        }
+    }
+};`
+            };
+
+            // Typewriter animation with syntax highlighting
+            async function typeWriter(text, element, speed = 30) {
+                element.innerHTML = '';
+                const lines = text.split('\n');
+                
+                for (let line of lines) {
+                    const lineElement = document.createElement('div');
+                    element.appendChild(lineElement);
+                    
+                    // Add syntax highlighting
+                    const processedLine = highlightSyntax(line);
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        lineElement.innerHTML = processedLine.substring(0, i + 1);
+                        await new Promise(resolve => setTimeout(resolve, speed));
+                    }
+                }
+            }
+
+            function highlightSyntax(line) {
+                return line
+                    .replace(/\b(class|function|const|let|var|if|else|return|new|this|async|await|use|impl|struct)\b/g, '<span class="keyword">$1</span>')
+                    .replace(/\b(string|number|boolean|void|Result|Option|HashMap)\b/g, '<span class="type">$1</span>')
+                    .replace(/(["'`])(?:(?=(\\?))\2.)*?\1/g, '<span class="string">$&</span>')
+                    .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="number">$1</span>')
+                    .replace(/(\/\/.*|#.*|\/\*[\s\S]*?\*\/)$/g, '<span class="comment">$1</span>')
+                    .replace(/\b([a-zA-Z_]\w*(?=\s*\())\b/g, '<span class="function">$1</span>');
+            }
+
+            async function cycleLanguages() {
+                const languages = Object.keys(codeExamples);
+                while (true) {
+                    const language = languages[currentLanguageIndex];
+                    const code = codeExamples[language];
+                    
+                    filenameDisplay.textContent = `example.${language}`;
+                    await typeWriter(code, codeElement);
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    
+                    currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+                }
+            }
+
+            // Modal functionality
+            function openModal() {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                animateInfoCards();
+            }
+
+            function closeModal() {
+                modal.style.animation = 'modalSlideOut 0.3s ease-out';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.style.animation = '';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            }
+
+            function animateInfoCards() {
+                const cards = document.querySelectorAll('.info-card');
+                cards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.5s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            }
+
+            // Event listeners
+            if (personalInfoBtn) personalInfoBtn.addEventListener('click', openModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeModal);
+            if (modal) {
+                window.onclick = (e) => {
+                    if (e.target === modal) closeModal();
+                };
+            }
+
+            // Start the code animation
+            cycleLanguages();
+        });
     </script>
 </head>
 <body>
@@ -1132,18 +1801,95 @@
     </nav>
 
     <section id="about" class="animate__animated animate__fadeIn">
-        <h2 class="section-title">About Me</h2>
-        <p>I'm Vansh, a passionate developer with over 4 years of experience in software development, specializing in Minecraft plugin development, web applications, and game development. My expertise spans across multiple programming languages and frameworks, with a strong focus on creating optimized, scalable solutions.</p>
-        
-        <div class="spoiler animate__animated animate__pulse" onclick="toggleSpoiler('personal-info')">View Personal Info</div>
-        <div id="personal-info" class="spoiler-content">
-            <p><strong>Born:</strong> 27 January 2001</p>
-            <p><strong>Age:</strong> <span id="age">23</span></p>
-            <p><strong>Born in:</strong> India</p>
-            <p><strong>Currently living in:</strong> Singapore</p>
-            <p><strong>Languages:</strong> English (Fluent), Hindi (Native)</p>
+        <div class="about-container">
+            <div class="code-preview-container">
+                <div class="code-preview-box">
+                    <div class="code-header">
+                        <div class="window-controls">
+                            <div class="window-button close"></div>
+                            <div class="window-button minimize"></div>
+                            <div class="window-button maximize"></div>
+                        </div>
+                        <span class="filename-display">example.py</span>
+                    </div>
+                    <pre class="code-content">
+                        <code class="typewriter-text"></code>
+                    </pre>
+                </div>
+                <div class="fog-effect"></div>
+            </div>
+            
+            <div class="about-content-container">
+                <div class="about-content-box">
+                    <h2 class="section-title">About Me</h2>
+                    <div class="about-text">
+                        <p>I'm Vansh, a passionate developer with over 4 years of experience in software development, specializing in Minecraft plugin development, web applications, and game development. My expertise spans across multiple programming languages and frameworks, with a strong focus on creating optimized, scalable solutions.</p>
+                    </div>
+                    
+                    <button class="personal-info-btn">
+                        <i class="fas fa-user-circle"></i>
+                        <span>View Personal Info</span>
+                        <div class="btn-glow"></div>
+                    </button>
+                </div>
+                <div class="fog-effect"></div>
+            </div>
         </div>
     </section>
+
+    <div id="personal-info-modal" class="modal">
+        <div class="modal-content">
+            <div class="code-header">
+                <div class="window-controls">
+                    <div class="window-button close"></div>
+                    <div class="window-button minimize"></div>
+                    <div class="window-button maximize"></div>
+                </div>
+                <span class="filename-display">Personal Information</span>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-card" data-tooltip="Date of Birth">
+                    <div class="card-glow"></div>
+                    <i class="fas fa-birthday-cake"></i>
+                    <h3>Born</h3>
+                    <p>27 January 2001</p>
+                    <div class="card-shine"></div>
+                </div>
+                
+                <div class="info-card" data-tooltip="Current Age">
+                    <div class="card-glow"></div>
+                    <i class="fas fa-user"></i>
+                    <h3>Age</h3>
+                    <p id="age">23</p>
+                    <div class="card-shine"></div>
+                </div>
+                
+                <div class="info-card" data-tooltip="Current Location">
+                    <div class="card-glow"></div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Location</h3>
+                    <p>Singapore</p>
+                    <div class="card-shine"></div>
+                </div>
+                
+                <div class="info-card" data-tooltip="Languages Spoken">
+                    <div class="card-glow"></div>
+                    <i class="fas fa-language"></i>
+                    <h3>Languages</h3>
+                    <p>English (Fluent)<br>Hindi (Native)</p>
+                    <div class="card-shine"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="close-modal">
+                    <i class="fas fa-times"></i>
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 
     <section id="skills">
         <h2 class="section-title animate__animated animate__fadeIn">Technical Skills</h2>
